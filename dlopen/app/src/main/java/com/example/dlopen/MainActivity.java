@@ -27,20 +27,10 @@ public class MainActivity extends AppCompatActivity {
         // Example of a call to a native method
         TextView tv = findViewById(R.id.sample_text);
 
-        String libDir = new File(getPackageCodePath()).getParent() + "/lib/" + convertABItoLibDir(Build.SUPPORTED_ABIS[0]);
+        String libDir = getApplicationInfo().nativeLibraryDir;
         Log.d(TAG, "libDir: " + libDir);
 
         tv.setText(stringFromJNI(libDir));
-    }
-
-    private String convertABItoLibDir(String abi) {
-        String ret = abi;
-
-        if (abi.equals( "arm64-v8a")) {
-            ret = "arm64";
-        }
-
-        return ret;
     }
 
     /**
