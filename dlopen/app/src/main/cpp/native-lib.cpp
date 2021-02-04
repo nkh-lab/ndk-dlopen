@@ -10,6 +10,7 @@ const char* TAG = __FILE_NAME__;
 
 void test_dlopen(const std::string& lib);
 void test_boost_dll_import_alias(const std::string& lib);
+void test_dlopen_system_lib();
 } // namespace
 
 #define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO, TAG, __VA_ARGS__))
@@ -28,6 +29,7 @@ Java_com_example_dlopen_MainActivity_stringFromJNI(JNIEnv* env, jobject /* this 
 
     test_dlopen(lib);
     test_boost_dll_import_alias(lib);
+    test_dlopen_system_lib();
 
     return env->NewStringUTF(hello.c_str());
 }
@@ -87,5 +89,17 @@ void test_boost_dll_import_alias(const std::string& lib)
     }
     else
         LOGW("boost_alias_count = false");
+}
+
+void test_dlopen_system_lib()
+{
+    void* handle = dlopen("libaudioflinger.so", RTLD_LAZY | RTLD_GLOBAL);
+
+    if (handle)
+    {
+        LOGW("dlopen(%s): OK", "libaudioflinger.so");
+    }
+    else
+        LOGW("dlopen(%s): NOK", "libaudioflinger.so");
 }
 } // namespace
